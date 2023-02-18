@@ -4,14 +4,14 @@ import { Near, WalletConnection } from 'near-api-js';
 import * as nearConfig from './near-config';
 
 type NearContextType = {
-  near: Near | null;
-  wallet: WalletConnection | null;
+  nearConnection: Near | null;
+  walletConnection: WalletConnection | null;
   contractId: string;
 }
 
 const NearContext = React.createContext<NearContextType>({
-  near: null,
-  wallet: null,
+  nearConnection: null,
+  walletConnection: null,
   contractId: nearConfig.NEAR_CONTRACT_ID
 });
 
@@ -20,13 +20,13 @@ interface INearProviderProps {
 }
 
 export const NearProvider = (props: INearProviderProps) => {
-  const { near, wallet } = useConnect(
+  const { nearConnection, walletConnection } = useConnect(
     nearConfig.connectionConfig,
     nearConfig.NEAR_APP_KEY_PREFIX
   );
   const value = {
-    near,
-    wallet,
+    nearConnection,
+    walletConnection,
     contractId: nearConfig.NEAR_CONTRACT_ID
   };
   return (

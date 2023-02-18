@@ -6,19 +6,19 @@ import styles from './header.module.css';
 import React from 'react';
 
 const UserMenu = () => {
-  const { wallet } = useNear();
+  const { walletConnection } = useNear();
   
   const handleSignOut = React.useCallback(async () => {
-    wallet?.signOut();
+    walletConnection?.signOut();
     window.location.reload();
-  }, [wallet]);
+  }, [walletConnection]);
 
   return (
     <>
       <Navbar.Text className={styles.navbarText}>
         Signed in as:    
       </Navbar.Text>
-      <NavDropdown title={wallet?.getAccountId()}>
+      <NavDropdown title={walletConnection?.getAccountId()}>
         <NavDropdown.Item onClick={handleSignOut}>Sign Out</NavDropdown.Item>
       </NavDropdown>
     </>
@@ -30,11 +30,11 @@ interface IHeaderProps {
 }
 
 const Header = (props: IHeaderProps) => {
-  const { wallet, contractId } = useNear();
+  const { walletConnection, contractId } = useNear();
   
   const handleSignIn = React.useCallback(async () => {
-    wallet?.requestSignIn({ contractId });
-  }, [wallet, contractId])
+    walletConnection?.requestSignIn({ contractId });
+  }, [walletConnection, contractId])
 
   return (
     <Navbar bg="light" expand="lg" className={props.className}>
@@ -42,7 +42,7 @@ const Header = (props: IHeaderProps) => {
         <Navbar.Brand href="#home">NEAR Wallet App</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          { wallet?.isSignedIn() 
+          { walletConnection?.isSignedIn() 
             ? <UserMenu />
             : <Button onClick={handleSignIn}>Sign In</Button> }
         </Navbar.Collapse>
