@@ -1,25 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useNear } from './near/near-context';
+import * as nearConfig from './near/near-config';
+import { useContract } from './near/near-hooks';
+import RGB from './components/rgb/RGB';
+import Page from './components/page/Page';
 
 function App() {
+  const { wallet } = useNear();
+  const { get, set } = useContract(wallet, nearConfig.NEAR_CONTRACT_ID);
+  const [rgbValue, setRGBValue] = React.useState<number[] | null>(null);
+
+  React.useEffect(() => {
+    const read = async () => {
+      const value = await get();
+      if (!value) {
+        return;
+      }
+      setRGBValue(value)
+    }
+    read();
+  }, [get]);
+
+  const handleColorChange = React.useCallback(
+    async (changedValue: number[]) => {
+      if (!changedValue) {
+        return;
+      }
+      const [r, g, b] = changedValue;
+      await set({ r, g, b });
+      setRGBValue(changedValue);
+    },
+    [set]
+  );
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Page>
+      { wallet?.isSignedIn() && <RGB value={rgbValue} onChange={handleColorChange} /> }
+    </Page>
   );
 }
 

@@ -1,0 +1,9 @@
+.rgbGroup {
+  display: inline-flex;
+  align-items: center;
+}
+
+.rgbLabel {
+  margin-right: 5px;
+  margin-bottom: 0;
+}
