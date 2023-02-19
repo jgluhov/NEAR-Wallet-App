@@ -8,8 +8,9 @@ import { hexToRgb, rgbToHex } from '../../utils';
 interface RGBProps {
   value: number[] | undefined,
   label: string | undefined;
-  onChange(value: number[]): Promise<void>;
+  onChange(value: number[]): void;
   className?: string;
+  disabled?: boolean;
 }
 
 const RGB = (props: RGBProps) => {
@@ -39,6 +40,7 @@ const RGB = (props: RGBProps) => {
       <Form.Label className={styles.rgbLabel}>{props.label}</Form.Label>
       <Form.Control type="color"
         className={styles.rgbControl}
+        disabled={props.disabled}
         value={value}
         onChange={handleChange} />
     </Form.Group>

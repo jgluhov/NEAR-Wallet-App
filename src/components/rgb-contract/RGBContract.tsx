@@ -1,47 +1,53 @@
 import React from 'react';
 import ReactLoading from 'react-loading';
-import { IColorContract } from '../../near/near-hooks';
+import { useContract } from '../../near/near-hooks';
 import styles from './rgb-contract.module.css';
 import RGB from '../rgb/RGB';
+import { useNear } from '../../near/near-context';
 
 
 interface IContractProps {
-  contract: IColorContract | null;
+  contractId: string;
+  disabled: boolean;
 }
 
 const RGBContract = (props: IContractProps) => {
+  const { walletConnection } = useNear();
+  const contract = useContract(walletConnection, props.contractId);
   const [rgbValue, setRGBValue] = React.useState<number[] | undefined>();
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const get = async () => {
-      setIsLoading(true);
-      setRGBValue(await props.contract?.get());
-      setIsLoading(false);
-    }
-    get();
-  }, [props.contract]);
+    setIsLoading(true);
+    contract?.get()
+      .then((contractValue: number[]) => setRGBValue(contractValue))
+      .finally(() => setIsLoading(false))
+  }, [contract]);
 
   const handleColorChange = React.useCallback(
-    async (changedValue: number[]) => {
+    (changedValue: number[]) => {
       if (!changedValue) {
         return;
       }
+      
       const [r, g, b] = changedValue;
+      
       setIsLoading(true);
-      await props.contract?.set({ r, g, b });
-      setIsLoading(false);
-      setRGBValue(changedValue);
+      contract?.set({ r, g, b }).then(() => {
+        setIsLoading(false);
+        setRGBValue(changedValue);
+      });
     },
-    [props.contract]
+    [contract]
   );
 
   return (
     <div className={styles.contract}>
       <RGB value={rgbValue}
+        disabled={props.disabled}
         className={styles.control}
         onChange={handleColorChange}
-        label={props.contract?.contractId}
+        label={contract?.contractId}
       />
       { isLoading && <ReactLoading type={'cylon'} color='#bbc0c4' /> }
     </div>
