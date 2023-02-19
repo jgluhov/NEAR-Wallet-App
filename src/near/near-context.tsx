@@ -12,7 +12,7 @@ type NearContextType = {
 const NearContext = React.createContext<NearContextType>({
   nearConnection: null,
   walletConnection: null,
-  contractId: nearConfig.NEAR_CONTRACT_ID
+  contractId: nearConfig.CONTRACT_ID
 });
 
 interface INearProviderProps {
@@ -27,7 +27,7 @@ export const NearProvider = (props: INearProviderProps) => {
   const value = {
     nearConnection,
     walletConnection,
-    contractId: nearConfig.NEAR_CONTRACT_ID
+    contractId: nearConfig.CONTRACT_ID
   };
   return (
     <NearContext.Provider value={value}>

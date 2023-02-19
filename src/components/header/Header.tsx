@@ -8,7 +8,7 @@ import React from 'react';
 const UserMenu = () => {
   const { walletConnection } = useNear();
   
-  const handleSignOut = React.useCallback(async () => {
+  const handleSignOut = React.useCallback(() => {
     walletConnection?.signOut();
     window.location.reload();
   }, [walletConnection]);
@@ -32,7 +32,7 @@ interface IHeaderProps {
 const Header = (props: IHeaderProps) => {
   const { walletConnection, contractId } = useNear();
   
-  const handleSignIn = React.useCallback(async () => {
+  const handleSignIn = React.useCallback(() => {
     walletConnection?.requestSignIn({ contractId });
   }, [walletConnection, contractId])
 
