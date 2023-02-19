@@ -1,6 +1,5 @@
 import { keyStores, connect, WalletConnection, Contract, Near, ConnectConfig } from 'near-api-js';
 import React from 'react';
-import { IRGBValue } from '../utils';
 
 const keyStore = new keyStores.BrowserLocalStorageKeyStore();
 
