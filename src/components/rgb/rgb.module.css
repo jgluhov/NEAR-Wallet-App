@@ -7,3 +7,9 @@
   margin-right: 5px;
   margin-bottom: 0;
 }
+
+.rgbControl {
+  padding: 0;
+  outline: none;
+  border: 0;
+}

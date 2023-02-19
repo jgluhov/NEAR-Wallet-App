@@ -4,7 +4,7 @@ import { IRGBValue } from '../utils';
 
 const keyStore = new keyStores.BrowserLocalStorageKeyStore();
 
-interface IColorContract extends Contract {
+export interface IColorContract extends Contract {
   get(): number[];
   set(value: object, gas?: string, deposit?: string): void;
 }
@@ -32,24 +32,6 @@ export const useContract = (
 ) => {
   const [contract, setContract] = React.useState<IColorContract | null>(null);
 
-  const read = React.useCallback(async () => {
-    let value;
-    try {
-      value = await contract?.get();
-    } catch (e) {
-      console.log(e);
-    }
-    return value;
-  }, [contract])
-
-  const change = React.useCallback(async (rgb: IRGBValue) => {
-    try {
-      await contract?.set(rgb)
-    } catch (e) {
-      console.log(e);
-    }
-  }, [contract])
-
   React.useEffect(() => {
     if (!walletConnection) {
       return;
@@ -64,5 +46,5 @@ export const useContract = (
     createContract();
   }, [walletConnection, contractId])
 
-  return {change, read};
+  return contract;
 }

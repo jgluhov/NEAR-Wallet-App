@@ -1,11 +1,15 @@
 import React, { ChangeEvent } from 'react';
 import Form from 'react-bootstrap/Form';
+import clsx from 'clsx';
 import styles from './rgb.module.css';
 import { hexToRgb, rgbToHex } from '../../utils';
 
+
 interface RGBProps {
-  value: number[] | null,
+  value: number[] | undefined,
+  label: string | undefined;
   onChange(value: number[]): Promise<void>;
+  className?: string;
 }
 
 const RGB = (props: RGBProps) => {
@@ -31,9 +35,12 @@ const RGB = (props: RGBProps) => {
   );
 
   return (
-    <Form.Group className={styles.rgbGroup}>
-      <Form.Label className={styles.rgbLabel}>Choose color</Form.Label>
-      <Form.Control type="color" value={value} onChange={handleChange} />
+    <Form.Group className={clsx(styles.rgbGroup, props.className)}>
+      <Form.Label className={styles.rgbLabel}>{props.label}</Form.Label>
+      <Form.Control type="color"
+        className={styles.rgbControl}
+        value={value}
+        onChange={handleChange} />
     </Form.Group>
   )
 }

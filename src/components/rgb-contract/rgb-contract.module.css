@@ -1,0 +1,8 @@
+.contract {
+  display: flex;
+  height: 60px;
+}
+
+.control {
+  margin-right: 10px;
+}
