@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { FocusEvent } from 'react';
 import Form from 'react-bootstrap/Form';
 import clsx from 'clsx';
 import styles from './rgb.module.css';
@@ -25,7 +25,7 @@ const RGB = (props: RGBProps) => {
   }, [props.value]);
 
   const handleChange = React.useCallback(
-    (evt: ChangeEvent<HTMLInputElement>) => {
+    (evt: FocusEvent<HTMLInputElement>) => {
       const color = hexToRgb(evt.target.value);;
       if (!color) {
         return;
@@ -36,13 +36,18 @@ const RGB = (props: RGBProps) => {
   );
 
   return (
-    <Form.Group className={clsx(styles.rgbGroup, props.className)}>
-      <Form.Label className={styles.rgbLabel}>{props.label}</Form.Label>
+    <Form.Group className={clsx(styles.group, props.className)}>
+      <Form.Label className={clsx(
+        styles.label,
+        props.disabled && styles.labelDisabled)
+      }>
+        {props.label}
+      </Form.Label>
       <Form.Control type="color"
-        className={styles.rgbControl}
+        className={styles.control}
         disabled={props.disabled}
         value={value}
-        onChange={handleChange} />
+        onBlur={handleChange} />
     </Form.Group>
   )
 }
