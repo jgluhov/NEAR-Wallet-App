@@ -47,7 +47,7 @@ const RGB = (props: RGBProps) => {
         className={styles.control}
         disabled={props.disabled}
         value={value}
-        onBlur={handleChange} />
+        onChange={handleChange} />
     </Form.Group>
   )
 }
